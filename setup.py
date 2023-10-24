@@ -3,7 +3,7 @@
 from os import path
 from setuptools import find_packages, setup
 
-from product_inventory.version import __version__
+# from product_inventory.version import __version__
 
 run_requirements = [
     "fastapi==0.104.0",
@@ -23,7 +23,7 @@ with open(path.join(here, "README.md"), encoding="utf-8") as readme:
 
 setup(
     name="Product Inventory Api",
-    version=__version__,
+    version="0.1.0",
     author="Kevin de Santana Araujo",
     author_email="kevin_santana.araujo@hotmail.com",
     packages=find_packages(exclude=["docs", "tests"]),
