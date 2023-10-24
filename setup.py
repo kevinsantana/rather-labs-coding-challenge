@@ -11,7 +11,9 @@ run_requirements = [
     "urllib3==2.0.7",
     "uvicorn==0.23.2",
     "black==23.10.0",
-    "gunicorn==21.2.0"
+    "gunicorn==21.2.0",
+    "psycopg2==2.9.9",
+    "pydantic==2.4.2",
 ]
 
 here = path.abspath(path.dirname(__file__))
