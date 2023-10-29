@@ -25,6 +25,7 @@ services:
     networks:
       - inventory-network
     depends_on:
+      - etl_products
       - db_inventory
     healthcheck:
       test: curl --fail http://localhost:3060/v1/docs || exit 1
@@ -32,6 +33,20 @@ services:
       timeout: 10s
       start_period: 10s
       retries: 3
+
+  etl_products:
+    container_name: etl_products
+    build:
+      context: .
+      dockerfile: Dockerfile.etl
+    image: etl:0.1.0
+    command: python3 /app/worker/etl.py
+    environment:
+      DB_URI: postgresql://postgres:secret@db_inventory:5432/inventory
+    networks:
+      - inventory-network
+    depends_on:
+      - db_inventory
   
   db_inventory:
     container_name: db_inventory
