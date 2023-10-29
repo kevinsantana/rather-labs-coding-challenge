@@ -14,6 +14,8 @@ run_requirements = [
     "gunicorn==21.2.0",
     "psycopg2==2.9.9",
     "pydantic==2.4.2",
+    "alembic==1.12.1",
+    "python-dotenv==1.0.0",
 ]
 
 here = path.abspath(path.dirname(__file__))

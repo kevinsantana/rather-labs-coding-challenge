@@ -11,7 +11,15 @@ services:
       - .:/app
     working_dir: /app
     command: >
-        bash -cx "gunicorn --workers=3 --worker-class=uvicorn.workers.UvicornWorker --timeout=174000 --bind=0.0.0.0:7000 'product_inventory.rest.app:start_application()'"
+        bash -cx "cd db && \
+        alembic upgrade head && \
+        cd .. && \
+        gunicorn \
+        --workers=3 \
+        --worker-class=uvicorn.workers.UvicornWorker \
+        --timeout=174000 \
+        --bind=0.0.0.0:3060 \
+        'product_inventory.rest.app:start_application()'"
     ports:
       - 3060:3060
     networks:

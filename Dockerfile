@@ -20,6 +20,9 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential gcc libpq-dev
+
 COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /app/ .
 
