@@ -1,38 +1,38 @@
 version: "3.9"
 
 services:
-  product_inventory:
-    container_name: product_inventory
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: inventory:0.1.0
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: >
-        bash -cx "cd db && \
-        alembic upgrade head && \
-        cd .. && \
-        gunicorn \
-        --workers=3 \
-        --worker-class=uvicorn.workers.UvicornWorker \
-        --timeout=174000 \
-        --bind=0.0.0.0:3060 \
-        'product_inventory.rest.app:start_application()'"
-    ports:
-      - 3060:3060
-    networks:
-      - inventory-network
-    depends_on:
-      - etl_products
-      - db_inventory
-    healthcheck:
-      test: curl --fail http://localhost:3060/v1/docs || exit 1
-      interval: 10s
-      timeout: 10s
-      start_period: 10s
-      retries: 3
+  # product_inventory:
+  #   container_name: product_inventory
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: inventory:0.1.0
+  #   volumes:
+  #     - .:/app
+  #   working_dir: /app
+  #   command: >
+  #       bash -cx "cd db && \
+  #       alembic upgrade head && \
+  #       cd .. && \
+  #       gunicorn \
+  #       --workers=3 \
+  #       --worker-class=uvicorn.workers.UvicornWorker \
+  #       --timeout=174000 \
+  #       --bind=0.0.0.0:3060 \
+  #       'product_inventory.rest.app:start_application()'"
+  #   ports:
+  #     - 3060:3060
+  #   networks:
+  #     - inventory-network
+  #   depends_on:
+  #     - etl_products
+  #     - db_inventory
+  #   healthcheck:
+  #     test: curl --fail http://localhost:3060/v1/docs || exit 1
+  #     interval: 10s
+  #     timeout: 10s
+  #     start_period: 10s
+  #     retries: 3
 
   etl_products:
     container_name: etl_products

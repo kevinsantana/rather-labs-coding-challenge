@@ -8,7 +8,7 @@ from psycopg2.extensions import parse_dsn
 
 from loguru import logger
 
-from product_inventory.config import envs
+from product_inventory.config.envs import DB_URI
 from product_inventory.exceptions import ErrorDetails
 from product_inventory.exceptions.database import RequiredFieldsException
 
@@ -63,7 +63,7 @@ class DataBase:
         """
         while True:
             try:
-                self.__connection = psycopg2.connect(**parse_dsn(envs.DB_URI))
+                self.__connection = psycopg2.connect(**parse_dsn(DB_URI))
                 if self.__connection:
                     self.__cursor = self.__connection.cursor(cursor_factory=DictCursor)
                     break

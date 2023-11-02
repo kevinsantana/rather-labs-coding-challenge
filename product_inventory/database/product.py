@@ -1,10 +1,12 @@
 from product_inventory.database import DataBase
 from product_inventory.models.product import ProductCategory
 
+from loguru import logger
 
 class Product(DataBase):
     def __init__(
         self,
+        id: int = None,
         name: str = None,
         description: str = None,
         price: float = None,
@@ -43,3 +45,44 @@ class Product(DataBase):
             for key, value in self.__dict__.items()
             if value
         }
+
+    def search_by_query(self, qtd: int, offset: int, min_price: float = None, max_price: float = None):
+        if offset:
+            self.__offset = (offset - 1) * qtd if offset != 1 else 1
+        if qtd:
+            self.__qtd = qtd
+        if min_price:
+            self.__min_price = min_price
+        if max_price:
+            self.__max_price = max_price
+        
+        self.query_string = """SELECT * FROM public.product"""
+
+        if any([self.__name, self.description, min_price, max_price, self.__category]):
+            self.query_string += " WHERE"
+
+        if self.__name:
+            self.query_string += " name = %(name)s"
+
+        if min_price and max_price:
+            self.query_string += " AND PRICE BETWEEN %(min_price)s AND %(max_price)s"
+        
+        elif min_price and not max_price:
+            self.query_string += " AND PRICE < %(min_price)s"
+        
+        elif max_price and not min_price:
+            self.query_string += " AND PRICE > %(max_price)s"
+
+        if self.__category:
+            self.query_string += " AND category = %(category)s"
+
+        if offset and qtd:
+            self.query_string += " LIMIT %(qtd)s OFFSET %(offset)s"
+        elif offset and not qtd:
+            self.query_string += " OFFSET %(offset)s"
+        elif qtd and not offset:
+            self.query_string += " LIMIT %(qtd)s"
+
+        logger.info(f"LIMIT {self.__qtd} OFFSET {self.__offset}")
+        products, total = self.find_all(total=True)
+        return total, [Product(**dict(product)) for product in products]

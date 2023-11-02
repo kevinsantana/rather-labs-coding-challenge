@@ -16,6 +16,7 @@ run_requirements = [
     "pydantic==2.4.2",
     "alembic==1.12.1",
     "python-dotenv==1.0.0",
+    "pydantic-settings==2.0.3",
 ]
 
 here = path.abspath(path.dirname(__file__))
