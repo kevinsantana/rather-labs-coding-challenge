@@ -12,11 +12,12 @@ run_requirements = [
     "uvicorn==0.23.2",
     "black==23.10.0",
     "gunicorn==21.2.0",
-    "psycopg2==2.9.9",
+    "psycopg2-binary==2.9.9",
     "pydantic==2.4.2",
     "alembic==1.12.1",
     "python-dotenv==1.0.0",
     "pydantic-settings==2.0.3",
+    "fastapi-pagination==0.12.12",
 ]
 
 here = path.abspath(path.dirname(__file__))

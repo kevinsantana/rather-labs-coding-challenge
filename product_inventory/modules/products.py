@@ -9,10 +9,10 @@ def search(
     max_price: float = None,
     category: ProductCategory = None,
     offset: int = None,
-    qtd: int = None,
+    limit: int = None,
 ):
     total, products = Product(
         name=name,
         category=category,
-    ).search_by_query(qtd, offset, min_price, max_price)
+    ).search_by_query(limit, offset, min_price, max_price)
     return total, [product.dict() for product in products]

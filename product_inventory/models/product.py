@@ -18,9 +18,3 @@ class Product(BaseModel):
     price: float
     quantity: int
     category: ProductCategory
-
-
-
-class Products(BaseModel):
-    result: List[Product]
-    pagination: Pagination = Field(..., description="Pagination data")

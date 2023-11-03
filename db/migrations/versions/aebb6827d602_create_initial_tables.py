@@ -12,19 +12,19 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'aebb6827d602'
+revision = "aebb6827d602"
 down_revision = None
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
-	with open("./migrations/versions/aebb6827d602_upgrades.sql") as file_:
-		for statement in file_.read().split(";\n"):  # or however we want to split
-		    op.execute(statement)
+    with open("./migrations/versions/aebb6827d602_upgrades.sql") as file_:
+        for statement in file_.read().split(";\n"):  # or however we want to split
+            op.execute(statement)
 
 
 def downgrade():
-	with open("./migrations/versions/aebb6827d602_downgrades.sql") as file_:
-		for statement in file_.read().split(";\n"):  # or however we want to split
-		    op.execute(statement)
+    with open("./migrations/versions/aebb6827d602_downgrades.sql") as file_:
+        for statement in file_.read().split(";\n"):  # or however we want to split
+            op.execute(statement)

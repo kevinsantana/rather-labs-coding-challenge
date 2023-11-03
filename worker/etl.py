@@ -19,7 +19,7 @@ from psycopg2.extensions import parse_dsn
 def set_up():
     # load project envs
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    load_dotenv(os.path.join(BASE_DIR, "worker", ".env"), override=True)
+    load_dotenv(f"{BASE_DIR}/.env", override=True)
     sys.path.append(BASE_DIR)
 
     def serialize(record):
@@ -120,7 +120,7 @@ def etl(n_products: int = 100_000):
                     "iteration": f"{i}/{n_products}",
                     "conn": conn,
                     "product": product if product else None,
-                    "product_id": product_id,
+                    "product_id": product_id if product_id else None,
                 }
                 logger.bind(**extra).log("ETL", "exception not handled")
                 continue

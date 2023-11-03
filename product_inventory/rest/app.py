@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+from fastapi_pagination import add_pagination
 from starlette.middleware.cors import CORSMiddleware
 
 from product_inventory.rest.routes import v1
@@ -61,4 +62,5 @@ def start_application():
         allow_credentials=True,
         allow_headers=["*"],
     )
+    add_pagination(app)
     return app

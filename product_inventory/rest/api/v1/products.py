@@ -1,16 +1,20 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Query, Request
+from fastapi_pagination import LimitOffsetPage, paginate
 
 from product_inventory.modules.products import search
-from product_inventory.rest.api.v1 import make_pagination
-from product_inventory.models.product import ProductCategory, Products
+from product_inventory.models.product import ProductCategory, Product
 
 router = APIRouter()
+from loguru import logger
 
 
 @router.get(
-    "/products", status_code=200, summary="Get products", response_model=Products
+    "/products",
+    status_code=200,
+    summary="Get products",
+    response_model=LimitOffsetPage[Product],
 )
 def products(
     request: Request,
@@ -20,13 +24,12 @@ def products(
     category: Annotated[
         ProductCategory | None, Query(description="Product category")
     ] = None,
-    offset: Annotated[int | None, Query(description="Page to return", gt=0)] = None,
-    qtd: Annotated[
-        int | None, Query(description="Number of products to find", gt=0)
-    ] = None,
 ):
     """
     Get products by given search query. If none, return all products.
     """
-    total, products = search(name, min_price, max_price, category, offset, qtd)
-    return make_pagination(products, qtd, offset, total, str(request.url))
+    offset, limit = int(request.query_params.get("offset", 1)), int(
+        request.query_params.get("limit", 50)
+    )
+    total, products = search(name, min_price, max_price, category, offset, limit)
+    return paginate(products)
