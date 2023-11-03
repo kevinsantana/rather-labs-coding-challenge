@@ -40,9 +40,10 @@ services:
       context: .
       dockerfile: Dockerfile.etl
     image: etl:0.1.0
-    command: python3 /app/worker/etl.py
-    environment:
-      DB_URI: postgresql://postgres:secret@db_inventory:5432/inventory
+    command: >
+        bash -cx "cd db && \
+        alembic upgrade head && \
+        python3 /app/worker/etl.py"
     networks:
       - inventory-network
     depends_on:
@@ -50,7 +51,7 @@ services:
   
   db_inventory:
     container_name: db_inventory
-    image: postgres:12
+    image: postgres:16-alpine
     restart: always
     environment:
       - POSTGRES_DB=inventory

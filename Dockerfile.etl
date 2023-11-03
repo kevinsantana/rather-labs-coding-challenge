@@ -2,30 +2,27 @@ FROM python:3.10-slim as builder
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential gcc libpq-dev
-
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY ./worker/requirements.txt .
-COPY .env ./worker/
+COPY .env .
 
 RUN pip install -r requirements.txt
 
 COPY ./worker/ ./worker/
+COPY ./db/ ./db/
 
 # final stage
 FROM python:3.10-slim
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential gcc libpq-dev
-
 COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /app/ .
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-CMD ["python3", "/app/worker/etl.py"]
+# RUN cd db && alembic upgrade head
+
+# CMD ["python3", "/app/worker/etl.py"]
